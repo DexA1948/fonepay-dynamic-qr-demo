@@ -8,7 +8,8 @@
     "dev": "nodemon server.js",
     "build": "webpack --mode production",
     "dev-frontend": "webpack serve --mode development",
-    "install-all": "npm install --legacy-peer-deps"
+    "install-all": "npm install --legacy-peer-deps",
+    "test": "node test-apis.js"
   },
   "dependencies": {
     "express": "^4.18.2",

@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const crypto = require('crypto');
 const axios = require('axios');
 const WebSocket = require('ws');
@@ -451,12 +452,31 @@ app.use((error, req, res, next) => {
   });
 });
 
+// Serve React app for all other routes (SPA support)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Error handling middleware
+app.use((error, req, res, next) => {
+  console.error('Server Error:', error);
+  res.status(500).json({
+    success: false,
+    error: 'Internal server error',
+    message: error.message
+  });
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log('\n🚀 Fonepay QR Tester Server Started!');
   console.log(`   Server running on: http://localhost:${PORT}`);
   console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log('   Ready to test Fonepay APIs! 🎉\n');
+  console.log('📚 Development Guide:');
+  console.log('   • Production-like: npm start (serves both API + frontend)');
+  console.log('   • Development: npm run dev-frontend (hot reload on :3002)');
+  console.log('   • Build frontend: npm run build');
 });
 
 module.exports = app;
